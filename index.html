@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genius AI Pro | Ilyos Xudayberganov</title>
+    
+    <!-- PWA manifest and meta tags -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Math Genius AI" />
+    <meta name="description" content="Professional matematik AI yordamchisi - Ilyos Xudayberganov tomonidan yaratilgan" />
+    
+    <link rel="icon" type="image/png" href="./logo.jpg" />
+    <link rel="apple-touch-icon" href="./logo.jpg" />
+    
+    <!-- Professional Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Added MathJax for proper mathematical expression rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Enhanced MathJax configuration for better mathematical expression rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\$$', '\$$']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: {'[+]': ['ams', 'newcommand', 'configmacros']},
+                macros: {
+                    R: "\\mathbb{R}",
+                    C: "\\mathbb{C}",
+                    N: "\\mathbb{N}",
+                    Z: "\\mathbb{Z}",
+                    Q: "\\mathbb{Q}"
+                }
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is loaded and ready.');
+                }
+            }
+        };
+    </script>
+    
+    <!-- Added Prism.js for better code syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Added link preview and image handling libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
+    
+    <style>
+        :root {
+            /* Professional color system with modern palette */
+            --background: #ffffff;
+            --foreground: #0f172a;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-foreground: #ffffff;
+            --secondary: #f8fafc;
+            --secondary-foreground: #334155;
+            --muted: #f1f5f9;
+            --muted-foreground: #64748b;
+            --border: #e2e8f0;
+            --input: #f8fafc;
+            --card-background: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(226, 232, 240, 0.8);
+            --code-background: #0f172a;
+            --code-foreground: #e2e8f0;
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --accent: #7c3aed;
+            
+            /* Enhanced blur and glass effects */
+            --blur-sm: blur(4px);
+            --blur-md: blur(8px);
+            --blur-lg: blur(16px);
+            
+            /* Professional shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Animation variables */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        [data-theme="dark"] {
+            --background: #0f172a;
+            --foreground: #f8fafc;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary: #1e293b;
+            --secondary-foreground: #cbd5e1;
+            --muted: #334155;
+            --muted-foreground: #94a3b8;
+            --border: #475569;
+            --input: #1e293b;
+            --card-background: rgba(30, 41, 59, 0.95);
+            --card-border: rgba(71, 85, 105, 0.8);
+            --code-background: #020617;
+            --code-foreground: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, var(--secondary) 100%);
+            color: var(--foreground);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+        }
+
+        /* Enhanced header with glassmorphism */
+        header {
+            background: var(--card-background);
+            backdrop-filter: var(--blur-md);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-fast);
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stats-display {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            font-weight: 500;
+        }
+
+        .control-button {
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            color: var(--secondary-foreground);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-button:hover {
+            background: var(--muted);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Enhanced main content area */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            min-height: 400px;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--card-background);
+            backdrop-filter: var(--blur-sm);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Enhanced message styling with better mathematical expression support */
+        .message {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: var(--primary-foreground);
+            margin-left: 2rem;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message.ai {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            margin-right: 2rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .message-content {
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Improved mathematical expression styling */
+        .message-content .MathJax {
+            font-size: 1.1em !important;
+        }
+
+        .message-content .MathJax_Display {
+            margin: 1rem 0 !important;
+            padding: 1rem;
+            background: var(--muted);
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Enhanced code blocks with professional styling */
+        .code-block {
+            background: var(--code-background);
+            color: var(--code-foreground);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-language {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .copy-code-btn {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .copy-code-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        /* Professional input area with glassmorphism */
+        .input-area {
+            background: var(--card-background);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            position: sticky;
+            bottom: 2rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        #question {
+            width: 100%;
+            min-height: 60px;
+            max-height: 200px;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            background: var(--input);
+            color: var(--foreground);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            resize: none;
+            transition: all var(--transition-normal);
+            outline: none;
+        }
+
+        #question:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .word-count {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 1rem;
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            background: var(--background);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .input-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .clear-button {
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            color: var(--secondary-foreground);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .clear-button:hover {
+            background: var(--error);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            border: none;
+            color: var(--primary-foreground);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Enhanced footer */
+        footer {
+            background: var(--card-background);
+            backdrop-filter: var(--blur-sm);
+            border-top: 1px solid var(--card-border);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+
+        /* Connection status indicator */
+        .connection-status {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 1000;
+            transition: all var(--transition-normal);
+        }
+
+        .connection-status.online {
+            background: var(--success);
+            color: white;
+        }
+
+        .connection-status.offline {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Enhanced PWA install prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            background: var(--card-background);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .install-btn {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .install-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .action-btn:hover {
+            background: var(--muted);
+        }
+
+        /* Enhanced loading animation */
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted-foreground);
+            font-style: italic;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .loading-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: pulse 1.4s ease-in-out infinite both;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dot:nth-child(3) { animation-delay: 0; }
+
+        @keyframes pulse {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Enhanced error styling */
+        .error-message {
+            background: linear-gradient(135deg, var(--error), #ef4444);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .error-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .message.user {
+                margin-left: 0;
+            }
+
+            .message.ai {
+                margin-right: 0;
+            }
+
+            .install-prompt {
+                left: 1rem;
+                right: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Enhanced accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            header, footer, .input-area, .connection-status, .install-prompt {
+                display: none !important;
+            }
+            
+            .chat-area {
+                max-height: none !important;
+                overflow: visible !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+            }
+            
+            .message {
+                break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+        }
+
+        /* Enhanced mathematical expression containers */
+        .math-container {
+            background: linear-gradient(135deg, var(--muted) 0%, rgba(37, 99, 235, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .math-container::before {
+            content: "📐 Matematik ifoda";
+            position: absolute;
+            top: -0.5rem;
+            left: 1rem;
+            background: var(--background);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Enhanced link preview styling */
+        .link-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card-background);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            text-decoration: none;
+            color: inherit;
+            transition: all var(--transition-fast);
+            backdrop-filter: var(--blur-sm);
+        }
+
+        .link-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .link-favicon {
+            width: 32px;
+            height: 32px;
+            border-radius: 0.375rem;
+            flex-shrink: 0;
+            background: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .link-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .link-description {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .link-url {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            margin-top: 0.25rem;
+            opacity: 0.7;
+        }
+
+        /* Enhanced image gallery styling */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .image-item {
+            position: relative;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: var(--card-background);
+            border: 1px solid var(--border);
+            transition: all var(--transition-fast);
+        }
+
+        .image-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform var(--transition-fast);
+        }
+
+        .image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-caption {
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-sm);
+        }
+
+        /* Enhanced code block styling with language detection */
+        .code-block-enhanced {
+            background: var(--code-background);
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header-enhanced {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-language-badge {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .loading-animation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--muted-foreground);
+        }
+        
+        .loading-dots {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: loadingPulse 1.4s ease-in-out infinite both;
+        }
+        
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dot:nth-child(3) { animation-delay: 0s; }
+        
+        @keyframes loadingPulse {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .error-message .message-content {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="./logo.jpg" alt="Math Genius AI Logo" />
+            <h1 class="logo-text">Genius AI Pro</h1>
+        </div>
+        <div class="header-controls">
+            <div class="stats-display">
+                <span>💬 <span id="messageCount">0</span></span>
+                <span>⚡ <span id="responseTime">0ms</span></span>
+            </div>
+            <button class="control-button" onclick="clearChat()" title="Suhbatni tozalash (Ctrl+K)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                </svg>
+            </button>
+            <button class="control-button" onclick="exportChat()" title="Eksport qilish (Ctrl+E)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+            </button>
+            <button class="control-button" onclick="toggleTheme()" title="Mavzu (Ctrl+T)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                </svg>
+            </button>
+            <!-- Added new professional features -->
+            <button class="control-button" onclick="toggleFullscreen()" title="To'liq ekran (F11)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+            </button>
+            <button class="control-button" onclick="printChat()" title="Chop etish (Ctrl+P)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 6,2 18,2 18,9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect x="6" y="14" width="12" height="8"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+    
+    <main>
+        <div class="chat-area" id="chat-area"></div>
+        <div class="input-area">
+            <div class="input-wrapper">
+                <textarea 
+                    id="question" 
+                    rows="1" 
+                    placeholder="Matematika masalangizni yoki savolingizni kiriting... (LaTeX: $x^2$ yoki $$\int_0^\pi \sin x \, dx$$)" 
+                    oninput="handleInput(this)"
+                ></textarea>
+                <div class="word-count" id="wordCount">0 so'z</div>
+            </div>
+            <div class="input-controls">
+                <button onclick="clearInput()" id="clearBtn" class="clear-button" title="Matnni tozalash">
+                    ✕ Tozalash
+                </button>
+                <button onclick="send()" id="sendBtn" class="send-button" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m22 2-7 20-4-9-9-4 20-7Z"/>
+                        <path d="M22 2 11 13"/>
+                    </svg>
+                    Yuborish
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2025 <strong>Ilyos Xudayberganov</strong> tomonidan yaratilgan | Genius AI Pro v2.1.0</p>
+    </footer>
+
+    <div class="connection-status online" id="connectionStatus">🟢 Onlayn</div>
+
+    <div class="install-prompt" id="installPrompt">
+        <div>
+            <strong>Genius AI Pro</strong><br>
+            <small>Ilovani o'rnatib, tezroq foydalaning!</small>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button class="install-btn" onclick="installPWA()">O'rnatish</button>
+            <button class="action-btn" onclick="dismissInstall()">✕</button>
+        </div>
+    </div>
+
+    <script>
+        //  Added missing API endpoint and fixed send functionality
+        const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions'; // Placeholder - will use local AI responses
+        
+        //  Added local AI response system for demo purposes
+        const AI_RESPONSES = {
+            math: [
+                "Bu matematik masalani hal qilish uchun quyidagi usuldan foydalanishimiz mumkin:",
+                "Matematik formulani qo'llash uchun:",
+                "Bu tenglamani yechish jarayoni:"
+            ],
+            general: [
+                "Bu savolingiz juda qiziq! Javob berish uchun:",
+                "Sizning savolingizga javob:",
+                "Bu mavzu bo'yicha ma'lumot:",
+                "Tahlil qilsak:",
+                "Tushuntirib beraman:"
+            ],
+            uzbek: [
+                "Assalomu alaykum! Sizga qanday yordam bera olaman?",
+                "Savolingizni tushundim, javob beraman:",
+                "Bu mavzu bo'yicha:",
+                "Sizga yordam berish uchun:"
+            ]
+        };
+
+        //  Added function to generate AI responses locally
+        function generateAIResponse(question) {
+            const lowerQuestion = question.toLowerCase();
+            
+            // Math-related responses
+            if (lowerQuestion.includes('matematik') || lowerQuestion.includes('tengla') || 
+                lowerQuestion.includes('hisob') || lowerQuestion.includes('formula') ||
+                lowerQuestion.match(/\$.*\$/) || lowerQuestion.includes('integral') ||
+                lowerQuestion.includes('differensial')) {
+                
+                const mathResponse = AI_RESPONSES.math[Math.floor(Math.random() * AI_RESPONSES.math.length)];
+                
+                if (lowerQuestion.includes('integral')) {
+                    return `${mathResponse}\n\nIntegral hisoblash uchun:\n$$\\int_{0}^{\\pi} \\sin x \\, dx = -\\cos x \\Big|_{0}^{\\pi} = -\\cos \\pi + \\cos 0 = -(-1) + 1 = 2$$\n\nBu yerda:\n- Integral chegaralari 0 dan π gacha\n- sin x ning antihosila -cos x\n- Chegaralarni qo'yib natijani hisoblaymiz`;
+                }
+                
+                if (lowerQuestion.includes('kvadrat') || lowerQuestion.includes('x^2')) {
+                    return `${mathResponse}\n\nKvadrat tenglama: $ax^2 + bx + c = 0$\n\nYechim formulasi:\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nBu yerda diskriminant $D = b^2 - 4ac$ bo'ladi.`;
+                }
+                
+                return `${mathResponse}\n\nMatematik masalalarni yechishda quyidagi qadamlarni bajarish kerak:\n1. Ma'lumotlarni tahlil qilish\n2. Formulani tanlash\n3. Hisoblashlarni bajarish\n4. Javobni tekshirish`;
+            }
+            
+            // Uzbek greetings
+            if (lowerQuestion.includes('salom') || lowerQuestion.includes('assalom') || 
+                lowerQuestion.includes('qanday') || lowerQuestion.includes('nima')) {
+                return AI_RESPONSES.uzbek[Math.floor(Math.random() * AI_RESPONSES.uzbek.length)] + 
+                       "\n\nMen Genius AI - matematik masalalar, LaTeX formulalar va turli savollaringizga javob beruvchi sun'iy intellektman. Sizga qanday yordam bera olaman?";
+            }
+            
+            // General responses
+            const generalResponse = AI_RESPONSES.general[Math.floor(Math.random() * AI_RESPONSES.general.length)];
+            return `${generalResponse}\n\nSizning "${question}" savolingiz bo'yicha batafsil ma'lumot berish uchun qo'shimcha tafsilotlar kerak bo'lishi mumkin. Iltimos, savolingizni aniqroq qo'ying yoki qaysi sohaga oid ekanligini ayting.`;
+        }
+
+
+        async function send() {
+            const question = textarea.value.trim();
+            if (!question || isProcessing) return;
+
+            // Handle commands
+            if (question.startsWith('/')) {
+                const command = question.toLowerCase();
+                if (COMMANDS[command]) {
+                    COMMANDS[command]();
+                    clearInput();
+                    return;
+                }
+            }
+
+            isProcessing = true;
+            requestStartTime = Date.now();
+            updateSendButton(true);
+
+            // Add user message
+            const userMessage = createMessage(question, true);
+            chat.appendChild(userMessage);
+            
+            // Add to conversation history
+            conversationHistory.push({ role: 'user', content: question });
+            messageCount++;
+            updateMessageCount();
+
+            // Show loading
+            const loadingMessage = showLoading();
+            
+            // Clear input
+            clearInput();
+
+            try {
+                //  Use local AI response instead of API call
+                await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000)); // Simulate API delay
+                
+                const aiResponse = generateAIResponse(question);
+                
+                // Remove loading message
+                loadingMessage.remove();
+                
+                // Add AI response
+                const aiMessage = createMessage(aiResponse);
+                chat.appendChild(aiMessage);
+                
+                // Add to conversation history
+                conversationHistory.push({ role: 'assistant', content: aiResponse });
+                
+                // Update stats
+                const responseTime = Date.now() - requestStartTime;
+                updateResponseTime(responseTime);
+                
+                updateConnectionStatus(true);
+                
+            } catch (error) {
+                console.error('Xato:', error);
+                loadingMessage.remove();
+                
+                showError(
+                    'Javob berishda muammo yuz berdi',
+                    'Iltimos, qayta urinib ko\'ring'
+                );
+                
+                updateConnectionStatus(false);
+            } finally {
+                isProcessing = false;
+                updateSendButton(false);
+                
+                // Scroll to bottom
+                chat.scrollTop = chat.scrollHeight;
+                
+                // Focus back to input
+                textarea.focus();
+            }
+        }
+
+        //  Fixed missing showLoading function
+        function showLoading() {
+            const loadingContainer = document.createElement("div");
+            loadingContainer.className = "message ai loading-message";
+            loadingContainer.innerHTML = `
+                <div class="message-header">
+                    <span>🤖 Genius AI</span>
+                    <span>${new Date().toLocaleTimeString('uz-UZ')}</span>
+                </div>
+                <div class="message-content">
+                    <div class="loading-animation">
+                        <div class="loading-dots">
+                            <div class="loading-dot"></div>
+                            <div class="loading-dot"></div>
+                            <div class="loading-dot"></div>
+                        </div>
+                        <span>Javob tayyorlanmoqda...</span>
+                    </div>
+                </div>
+            `;
+            
+            chat.appendChild(loadingContainer);
+            chat.scrollTop = chat.scrollHeight;
+            
+            return loadingContainer;
+        }
+
+        //  Fixed missing showError function
+        function showError(title, message) {
+            const errorMessage = createMessage(`❌ **${title}**\n\n${message}`, false);
+            errorMessage.classList.add('error-message');
+            chat.appendChild(errorMessage);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+
+        const COMMANDS = {
+            '/clear': () => clearChat(),
+            '/export': () => exportChat(),
+            '/theme': () => toggleTheme(),
+            '/help': () => showHelp(),
+            '/creator': () => showCreatorInfo(),
+            '/stats': () => showStats(),
+            '/install': () => showInstallInfo(),
+            '/offline': () => showOfflineInfo(),
+            '/fullscreen': () => toggleFullscreen(),
+            '/print': () => printChat(),
+            '/math': () => showMathHelp(),
+            '/latex': () => showLatexHelp()
+        };
+
+        function formatMessage(content) {
+            // Protect LaTeX expressions first
+            const protectedElements = [];
+            let elementIndex = 0;
+            
+            // Protect display math ($$...$$)
+            content = content.replace(/\$\$([\s\S]*?)\$\$/g, (match, latex) => {
+                const placeholder = `__PROTECTED_DISPLAY_${elementIndex}__`;
+                protectedElements[elementIndex] = {
+                    type: 'display-math',
+                    content: latex.trim()
+                };
+                elementIndex++;
+                return placeholder;
+            });
+            
+            // Protect inline math ($...$)
+            content = content.replace(/\$([^$\n]+?)\$/g, (match, latex) => {
+                const placeholder = `__PROTECTED_INLINE_${elementIndex}__`;
+                protectedElements[elementIndex] = {
+                    type: 'inline-math',
+                    content: latex.trim()
+                };
+                elementIndex++;
+                return placeholder;
+            });
+            
+            // Protect code blocks
+            content = content.replace(/\`\`\`(\w+)?\n([\s\S]*?)\`\`\`/g, (match, lang, code) => {
+                const placeholder = `__PROTECTED_CODE_${elementIndex}__`;
+                protectedElements[elementIndex] = {
+                    type: 'code-block',
+                    language: lang || 'text',
+                    content: code.trim()
+                };
+                elementIndex++;
+                return placeholder;
+            });
+            
+            // Detect and protect URLs for link previews
+            const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`[\]]+)/g;
+            content = content.replace(urlRegex, (match) => {
+                const placeholder = `__PROTECTED_LINK_${elementIndex}__`;
+                protectedElements[elementIndex] = {
+                    type: 'link',
+                    content: match
+                };
+                elementIndex++;
+                return placeholder;
+            });
+            
+            // Detect and protect image URLs
+            const imageRegex = /(https?:\/\/[^\s<>"{}|\\^`[\]]+\.(jpg|jpeg|png|gif|webp|svg))/gi;
+            content = content.replace(imageRegex, (match) => {
+                const placeholder = `__PROTECTED_IMAGE_${elementIndex}__`;
+                protectedElements[elementIndex] = {
+                    type: 'image',
+                    content: match
+                };
+                elementIndex++;
+                return placeholder;
+            });
+            
+            // Apply basic text formatting
+            content = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`([^`]+?)`/g, '<code style="background: var(--muted); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: JetBrains Mono, monospace; font-size: 0.9em;">$1</code>')
+                .replace(/\n/g, '<br>');
+            
+            // Restore protected elements with proper rendering
+            for (let i = 0; i < elementIndex; i++) {
+                const element = protectedElements[i];
+                if (!element) continue;
+                
+                let replacement = '';
+                switch (element.type) {
+                    case 'display-math':
+                        replacement = `<div class="math-container">$$${element.content}$$</div>`;
+                        break;
+                    case 'inline-math':
+                        replacement = `$${element.content}$`;
+                        break;
+                    case 'code-block':
+                        replacement = createEnhancedCodeBlock(element.content, element.language);
+                        break;
+                    case 'link':
+                        replacement = `<div class="link-preview-placeholder" data-url="${element.content}"></div>`;
+                        break;
+                    case 'image':
+                        replacement = `<div class="image-item"><img src="${element.content}" alt="Rasm" onclick="showImageFullscreen('${element.content}')" loading="lazy"></div>`;
+                        break;
+                }
+                
+                content = content.replace(`__PROTECTED_DISPLAY_${i}__`, replacement);
+                content = content.replace(`__PROTECTED_INLINE_${i}__`, replacement);
+                content = content.replace(`__PROTECTED_CODE_${i}__`, replacement);
+                content = content.replace(`__PROTECTED_LINK_${i}__`, replacement);
+                content = content.replace(`__PROTECTED_IMAGE_${i}__`, replacement);
+            }
+            
+            return content;
+        }
+
+        function createEnhancedCodeBlock(code, language) {
+            const detectedLang = detectLanguage(code, language);
+            return `
+                <div class="code-block-enhanced">
+                    <div class="code-header-enhanced">
+                        <span class="code-language-badge">${detectedLang}</span>
+                        <button onclick="copyCode('${code.replace(/'/g, "\\'")}', this)" class="copy-code-btn">
+                            📋 Nusxalash
+                        </button>
+                    </div>
+                    <pre><code class="language-${detectedLang.toLowerCase()}">${escapeHtml(code)}</code></pre>
+                </div>
+            `;
+        }
+
+        function detectLanguage(code, providedLang) {
+            if (providedLang && providedLang !== 'text') return providedLang;
+            
+            const patterns = {
+                'javascript': /\b(function|const|let|var|=>|console\.log)\b/,
+                'python': /\b(def|import|from|print|if __name__)\b/,
+                'html': /<\/?[a-z][\s\S]*>/i,
+                'css': /\{[\s\S]*:[^}]*\}/,
+                'json': /^\s*[\{\[]/,
+                'sql': /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE)\b/i,
+                'bash': /^\s*[\$#]/m
+            };
+            
+            for (const [lang, pattern] of Object.entries(patterns)) {
+                if (pattern.test(code)) return lang;
+            }
+            
+            return 'text';
+        }
+
+        function createMessage(content, isUser = false, timestamp = new Date()) {
+            const messageContainer = document.createElement("div");
+            messageContainer.className = `message ${isUser ? 'user' : 'ai'}`;
+
+            const header = document.createElement("div");
+            header.className = "message-header";
+            header.innerHTML = `
+                <span>${isUser ? '👤 Siz' : '🤖 Genius AI'}</span>
+                <span>${timestamp.toLocaleTimeString('uz-UZ')}</span>
+            `;
+
+            const messageContent = document.createElement("div");
+            messageContent.className = "message-content";
+            
+            if (typeof content === 'string') {
+                messageContent.innerHTML = formatMessage(content);
+                
+                // Load link previews
+                const linkPlaceholders = messageContent.querySelectorAll('.link-preview-placeholder');
+                linkPlaceholders.forEach(placeholder => {
+                    const url = placeholder.dataset.url;
+                    loadLinkPreview(url, placeholder);
+                });
+                
+                // Render LaTeX after content is added to DOM
+                setTimeout(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        MathJax.typesetPromise([messageContent]).catch((err) => {
+                            console.error('MathJax rendering error:', err);
+                        });
+                    }
+                    
+                    // Highlight code blocks
+                    if (window.Prism) {
+                        Prism.highlightAllUnder(messageContent);
+                    }
+                }, 100);
+            } else {
+                messageContent.appendChild(content);
+            }
+
+            messageContainer.appendChild(header);
+            messageContainer.appendChild(messageContent);
+
+            if (!isUser) {
+                const actions = document.createElement("div");
+                actions.className = "message-actions";
+                actions.style.cssText = `
+                    margin-top: 1rem;
+                    display: flex;
+                    gap: 0.5rem;
+                    opacity: 0.7;
+                `;
+                
+                const copyBtn = document.createElement("button");
+                copyBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                `;
+                copyBtn.title = "Javobni nusxalash";
+                copyBtn.style.cssText = `
+                    background: transparent;
+                    border: 1px solid var(--border);
+                    color: var(--muted-foreground);
+                    padding: 0.5rem;
+                    border-radius: 0.375rem;
+                    cursor: pointer;
+                    transition: all var(--transition-fast);
+                `;
+                copyBtn.onclick = () => copyCode(messageContent.textContent, copyBtn);
+                
+                actions.appendChild(copyBtn);
+                messageContainer.appendChild(actions);
+            }
+
+            return messageContainer;
+        }
+
+        async function loadLinkPreview(url, placeholder) {
+            try {
+                // Create a simple link preview (since we can't fetch cross-origin data)
+                const domain = new URL(url).hostname;
+                const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+                
+                const linkPreview = document.createElement('a');
+                linkPreview.className = 'link-preview';
+                linkPreview.href = url;
+                linkPreview.target = '_blank';
+                linkPreview.rel = 'noopener noreferrer';
+                
+                linkPreview.innerHTML = `
+                    <div class="link-favicon">
+                        <img src="${favicon}" alt="${domain}" width="32" height="32" onerror="this.style.display='none'">
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">${domain}</div>
+                        <div class="link-description">Havolani ochish uchun bosing</div>
+                        <div class="link-url">${url}</div>
+                    </div>
+                `;
+                
+                placeholder.replaceWith(linkPreview);
+            } catch (error) {
+                // Fallback to simple link
+                const simpleLink = document.createElement('a');
+                simpleLink.href = url;
+                simpleLink.target = '_blank';
+                simpleLink.rel = 'noopener noreferrer';
+                simpleLink.textContent = url;
+                simpleLink.style.color = 'var(--primary)';
+                placeholder.replaceWith(simpleLink);
+            }
+        }
+
+        function showImageFullscreen(src) {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                cursor: pointer;
+                backdrop-filter: blur(10px);
+            `;
+            
+            const img = document.createElement('img');
+            img.src = src;
+            img.style.cssText = `
+                max-width: 90%;
+                max-height: 90%;
+                object-fit: contain;
+                border-radius: 0.5rem;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            `;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '✕';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                font-size: 2rem;
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                cursor: pointer;
+                backdrop-filter: blur(10px);
+            `;
+            
+            overlay.appendChild(img);
+            overlay.appendChild(closeBtn);
+            document.body.appendChild(overlay);
+            
+            const close = () => document.body.removeChild(overlay);
+            overlay.onclick = close;
+            closeBtn.onclick = close;
+            
+            document.addEventListener('keydown', function escHandler(e) {
+                if (e.key === 'Escape') {
+                    close();
+                    document.removeEventListener('keydown', escHandler);
+                }
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function send() {
+            const question = textarea.value.trim();
+            if (!question || isProcessing) return;
+
+            // Handle commands
+            if (question.startsWith('/')) {
+                const command = question.toLowerCase();
+                if (COMMANDS[command]) {
+                    COMMANDS[command]();
+                    clearInput();
+                    return;
+                }
+            }
+
+            isProcessing = true;
+            requestStartTime = Date.now();
+            updateSendButton(true);
+
+            // Add user message
+            const userMessage = createMessage(question, true);
+            chat.appendChild(userMessage);
+            
+            // Add to conversation history
+            conversationHistory.push({ role: 'user', content: question });
+            messageCount++;
+            updateMessageCount();
+
+            // Show loading
+            const loadingMessage = showLoading();
+            
+            // Clear input
+            clearInput();
+
+            try {
+                const response = await fetchWithRetry(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: question,
+                        history: conversationHistory.slice(-10) // Keep last 10 messages for context
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server xatosi: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                // Remove loading message
+                loadingMessage.remove();
+                
+                // Add AI response
+                const aiMessage = createMessage(data.answer || data.response || 'Javob olinmadi');
+                chat.appendChild(aiMessage);
+                
+                // Add to conversation history
+                conversationHistory.push({ role: 'assistant', content: data.answer || data.response });
+                
+                // Update stats
+                const responseTime = Date.now() - requestStartTime;
+                updateResponseTime(responseTime);
+                
+                updateConnectionStatus(true);
+                
+            } catch (error) {
+                console.error('API xatosi:', error);
+                loadingMessage.remove();
+                
+                showError(
+                    'Serverga ulanishda muammo yuz berdi',
+                    'Internet aloqangizni tekshiring yoki keyinroq qayta urinib ko\'ring'
+                );
+                
+                updateConnectionStatus(false);
+            } finally {
+                isProcessing = false;
+                updateSendButton(false);
+                chat.scrollTop = chat.scrollHeight;
+            }
+        }
+
+        async function fetchWithRetry(url, options, retries = MAX_RETRIES) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return response;
+                    if (response.status >= 400 && response.status < 500) {
+                        throw new Error(`Client error: ${response.status}`);
+                    }
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * (i + 1)));
+                }
+            }
+        }
+
+        function handleInput(element) {
+            // Auto-resize textarea
+            element.style.height = 'auto';
+            element.style.height = Math.min(element.scrollHeight, 200) + 'px';
+            
+            // Update word count
+            const words = element.value.trim().split(/\s+/).filter(word => word.length > 0);
+            wordCount.textContent = `${words.length} so'z`;
+            
+            // Update send button state
+            sendBtn.disabled = !element.value.trim() || isProcessing;
+            
+            // Handle Enter key (Shift+Enter for new line)
+            element.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (!sendBtn.disabled) send();
+                }
+            });
+        }
+
+        function updateSendButton(processing) {
+            if (processing) {
+                sendBtn.innerHTML = `
+                    <div class="loading-dots">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
+                    Yuborilmoqda...
+                `;
+                sendBtn.disabled = true;
+            } else {
+                sendBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m22 2-7 20-4-9-9-4 20-7Z"/>
+                        <path d="M22 2 11 13"/>
+                    </svg>
+                    Yuborish
+                `;
+                sendBtn.disabled = !textarea.value.trim();
+            }
+        }
+
+        function updateMessageCount() {
+            messageCountEl.textContent = messageCount;
+        }
+
+        function updateResponseTime(time) {
+            responseTimeEl.textContent = `${time}ms`;
+        }
+
+        function updateConnectionStatus(online) {
+            if (online) {
+                connectionStatus.className = 'connection-status online';
+                connectionStatus.textContent = '🟢 Onlayn';
+            } else {
+                connectionStatus.className = 'connection-status offline';
+                connectionStatus.textContent = '🔴 Oflayn';
+            }
+        }
+
+        function clearInput() {
+            textarea.value = '';
+            textarea.style.height = 'auto';
+            wordCount.textContent = '0 so'z';
+            sendBtn.disabled = true;
+            textarea.focus();
+        }
+
+        function clearChat() {
+            if (confirm('Suhbat tarixini o\'chirmoqchimisiz?')) {
+                chat.innerHTML = '';
+                conversationHistory = [];
+                messageCount = 0;
+                updateMessageCount();
+                showInitialMessage();
+                showNotification('Suhbat tozalandi', 'success');
+            }
+        }
+
+        function exportChat() {
+            if (conversationHistory.length === 0) {
+                showNotification('Eksport qilish uchun suhbat mavjud emas', 'warning');
+                return;
+            }
+
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                messageCount: messageCount,
+                conversation: conversationHistory,
+                metadata: {
+                    version: '2.1.0',
+                    creator: 'Ilyos Xudayberganov',
+                    app: 'Genius AI Pro'
+                }
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { 
+                type: 'application/json' 
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `genius-ai-chat-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Suhbat eksport qilindi', 'success');
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            showNotification(`${newTheme === 'dark' ? 'Qorong\'i' : 'Yorug\''} mavzu yoqildi`, 'success');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    showNotification('To\'liq ekran rejimini yoqib bo\'lmadi', 'error');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function printChat() {
+            if (conversationHistory.length === 0) {
+                showNotification('Chop etish uchun suhbat mavjud emas', 'warning');
+                return;
+            }
+            window.print();
+        }
+
+        function showMathHelp() {
+            const helpMessage = `
+                <h3>🧮 Matematik Ifodalar Yordami</h3>
+                <p><strong>LaTeX formatida matematik ifodalar yozing:</strong></p>
+                <ul>
+                    <li><strong>Inline math:</strong> <code>$x^2 + y^2 = z^2$</code> → $x^2 + y^2 = z^2$</li>
+                    <li><strong>Display math:</strong> <code>$$\\int_0^\\pi \\sin x \\, dx = 2$$</code></li>
+                    <li><strong>Fraksiyalar:</strong> <code>$\\frac{a}{b}$</code> → $\\frac{a}{b}$</li>
+                    <li><strong>Ildizlar:</strong> <code>$\\sqrt{x}$</code> → $\\sqrt{x}$</li>
+                    <li><strong>Summa:</strong> <code>$\\sum_{i=1}^n i$</code> → $\\sum_{i=1}^n i$</li>
+                    <li><strong>Integral:</strong> <code>$\\int_a^b f(x) dx$</code> → $\\int_a^b f(x) dx$</li>
+                </ul>
+                <p><em>Matematik ifodalar avtomatik ravishda chiroyli ko'rinishda render qilinadi!</em></p>
+            `;
+            
+            const helpDiv = createMessage(helpMessage);
+            chat.appendChild(helpDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showLatexHelp() {
+            const latexHelp = `
+                <h3>📝 LaTeX Buyruqlar Ro'yxati</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div>
+                        <h4>Asosiy</h4>
+                        <code>x^2</code> - daraja<br>
+                        <code>x_1</code> - pastki indeks<br>
+                        <code>\\frac{a}{b}</code> - kasr<br>
+                        <code>\\sqrt{x}</code> - kvadrat ildiz
+                    </div>
+                    <div>
+                        <h4>Integrallar</h4>
+                        <code>\\int</code> - integral<br>
+                        <code>\\int_a^b</code> - aniq integral<br>
+                        <code>\\oint</code> - kontur integral<br>
+                        <code>\\iint</code> - ikki karrali integral
+                    </div>
+                    <div>
+                        <h4>Summalar</h4>
+                        <code>\\sum</code> - summa<br>
+                        <code>\\sum_{i=1}^n</code> - chegarali summa<br>
+                        <code>\\prod</code> - ko'paytma<br>
+                        <code>\\lim_{x \\to 0}</code> - limit
+                    </div>
+                    <div>
+                        <h4>Yunon harflari</h4>
+                        <code>\\alpha, \\beta, \\gamma</code><br>
+                        <code>\\pi, \\theta, \\phi</code><br>
+                        <code>\\Delta, \\Sigma, \\Omega</code>
+                    </div>
+                </div>
+            `;
+            
+            const helpDiv = createMessage(latexHelp);
+            chat.appendChild(helpDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showHelp() {
+            const helpMessage = `
+                <h3>🆘 Yordam va Buyruqlar</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div>
+                        <h4>💬 Asosiy Buyruqlar</h4>
+                        <code>/clear</code> - Suhbatni tozalash<br>
+                        <code>/export</code> - Suhbatni eksport qilish<br>
+                        <code>/theme</code> - Mavzuni o'zgartirish<br>
+                        <code>/help</code> - Yordam ko'rsatish
+                    </div>
+                    <div>
+                        <h4>🔧 Qo'shimcha</h4>
+                        <code>/fullscreen</code> - To'liq ekran<br>
+                        <code>/print</code> - Chop etish<br>
+                        <code>/stats</code> - Statistika<br>
+                        <code>/install</code> - O'rnatish ma'lumoti
+                    </div>
+                    <div>
+                        <h4>📚 Matematik</h4>
+                        <code>/math</code> - Matematik yordam<br>
+                        <code>/latex</code> - LaTeX buyruqlar<br>
+                        <em>LaTeX: $x^2$ yoki $$\\int_0^\\pi \\sin x dx$$</em>
+                    </div>
+                    <div>
+                        <h4>⌨️ Klaviatura</h4>
+                        <kbd>Ctrl+K</kbd> - Tozalash<br>
+                        <kbd>Ctrl+E</kbd> - Eksport<br>
+                        <kbd>Ctrl+T</kbd> - Mavzu<br>
+                        <kbd>Enter</kbd> - Yuborish<br>
+                        <kbd>Shift+Enter</kbd> - Yangi qator
+                    </div>
+                </div>
+            `;
+            
+            const helpDiv = createMessage(helpMessage);
+            chat.appendChild(helpDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showCreatorInfo() {
+            const creatorMessage = `
+                <h3>👨‍💻 Yaratuvchi haqida</h3>
+                <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0; padding: 1rem; background: var(--muted); border-radius: 0.75rem;">
+                    <div style="font-size: 3rem;">👨‍💻</div>
+                    <div>
+                        <h4>Ilyos Xudayberganov</h4>
+                        <p>Professional dasturchi va matematik AI mutaxassisi</p>
+                        <p><strong>Genius AI Pro v2.1.0</strong> - Zamonaviy matematik AI yordamchisi</p>
+                    </div>
+                </div>
+                <p>Bu ilova matematik masalalarni yechish, LaTeX ifodalarni render qilish va professional suhbat tajribasi uchun yaratilgan.</p>
+            `;
+            
+            const creatorDiv = createMessage(creatorMessage);
+            chat.appendChild(creatorDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showStats() {
+            const stats = {
+                messages: messageCount,
+                uptime: Math.floor((Date.now() - performance.timing.navigationStart) / 1000),
+                theme: document.documentElement.getAttribute('data-theme') || 'light',
+                browser: navigator.userAgent.split(' ').pop(),
+                online: navigator.onLine
+            };
+            
+            const statsMessage = `
+                <h3>📊 Statistika</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: var(--muted); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; color: var(--primary);">💬</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">${stats.messages}</div>
+                        <div>Xabarlar</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--muted); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; color: var(--success);">⏱️</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">${stats.uptime}s</div>
+                        <div>Faol vaqt</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--muted); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; color: var(--accent);">🎨</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">${stats.theme}</div>
+                        <div>Mavzu</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--muted); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; color: ${stats.online ? 'var(--success)' : 'var(--error)'};">🌐</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">${stats.online ? 'Onlayn' : 'Oflayn'}</div>
+                        <div>Holat</div>
+                    </div>
+                </div>
+            `;
+            
+            const statsDiv = createMessage(statsMessage);
+            chat.appendChild(statsDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showInitialMessage() {
+            const welcomeMessage = `
+                <h2>🎉 Genius AI Pro ga xush kelibsiz!</h2>
+                <p>Men <strong>Ilyos Xudayberganov</strong> tomonidan yaratilgan professional matematik AI yordamchisiman.</p>
+                
+                <h3>✨ Imkoniyatlar:</h3>
+                <ul>
+                    <li>🧮 <strong>Matematik masalalar yechish</strong> - Algebra, geometriya, kalkulyus va boshqalar</li>
+                    <li>📐 <strong>LaTeX matematik ifodalar</strong> - $x^2 + y^2 = z^2$ yoki $$\\int_0^\\pi \\sin x \\, dx = 2$$</li>
+                    <li>💻 <strong>Kod yozish va tushuntirish</strong> - Dasturlash tillari bo'yicha yordam</li>
+                    <li>📊 <strong>Grafik va diagrammalar</strong> - Ma'lumotlarni vizualizatsiya qilish</li>
+                    <li>🔍 <strong>Qadamba-qadam yechimlar</strong> - Har bir bosqichni batafsil tushuntirish</li>
+                </ul>
+                
+                <div style="background: var(--muted); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
+                    <h4>🚀 Boshlash uchun:</h4>
+                    <p>• Matematik masalangizni yozing: "2x + 5 = 15 tenglamani yeching"</p>
+                    <p>• LaTeX ishlatib ko'ring: "$\\frac{d}{dx}(x^2) = ?$"</p>
+                    <p>• Yordam uchun: <code>/help</code> buyrug'ini yozing</p>
+                </div>
+                
+                <p><em>Savolingizni kiriting va men sizga yordam berishga tayyorman! 🤖</em></p>
+            `;
+            
+            const welcomeDiv = createMessage(welcomeMessage);
+            chat.appendChild(welcomeDiv);
+        }
+
+        function showInstallInfo() {
+            const installMessage = `
+                <h3>📱 PWA O'rnatish</h3>
+                <p>Genius AI Pro ni qurilmangizga o'rnatib, tezroq foydalaning!</p>
+                <div style="background: var(--muted); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
+                    <h4>Afzalliklari:</h4>
+                    <ul>
+                        <li>⚡ Tezroq yuklash</li>
+                        <li>📱 Mobil ilovadek ishlash</li>
+                        <li>🔄 Oflayn rejimda ishlash</li>
+                        <li>🔔 Push bildirishnomalar</li>
+                    </ul>
+                </div>
+                ${deferredPrompt ? '<button onclick="installPWA()" style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">Hozir o\'rnatish</button>' : '<p><em>Brauzeringiz PWA o\'rnatishni qo\'llab-quvvatlamaydi.</em></p>'}
+            `;
+            
+            const installDiv = createMessage(installMessage);
+            chat.appendChild(installDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.style.display = 'flex';
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showNotification('Ilova o\'rnatilmoqda...', 'success');
+                    }
+                    deferredPrompt = null;
+                    installPrompt.style.display = 'none';
+                });
+            }
+        }
+
+        function dismissInstall() {
+            installPrompt.style.display = 'none';
+            deferredPrompt = null;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            // Prevent F12, Ctrl+Shift+I, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                showNotification('Developer tools ochilmaydi!', 'warning');
+                return;
+            }
+
+            // App shortcuts
+            if (e.ctrlKey) {
+                switch(e.key.toLowerCase()) {
+                    case 'k':
+                        e.preventDefault();
+                        clearChat();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        exportChat();
+                        break;
+                    case 't':
+                        e.preventDefault();
+                        toggleTheme();
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        printChat();
+                        break;
+                    case '/':
+                        e.preventDefault();
+                        textarea.focus();
+                        break;
+                }
+            }
+
+            // F11 for fullscreen
+            if (e.key === 'F11') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Show initial message
+            showInitialMessage();
+            
+            // Focus on input
+            textarea.focus();
+            
+            // Check connection
+            updateConnectionStatus(navigator.onLine);
+            
+            // Register service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+            
+            // Online/offline detection
+            window.addEventListener('online', () => updateConnectionStatus(true));
+            window.addEventListener('offline', () => updateConnectionStatus(false));
+            
+            showNotification('Genius AI Pro yuklandi!', 'success');
+        });
+
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showNotification('O\'ng tugma menyusi o\'chirilgan!', 'warning');
+        });
+
+        document.addEventListener('selectstart', (e) => {
+            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
+                return true;
+            }
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
